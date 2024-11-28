@@ -9,7 +9,7 @@ const AdminPage = () => {
     const [totalMembers, setTotalMembers] = useState<number>(0);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [selectedUser, setSelectedUser] = useState<any>(null); // Store selected user data for modal
-    const [isRefreshAPI, setIsRefreshAPI] = useState<boolean>(false);
+    const [isRefreshAPI, setIsRefreshAPI] = useState<boolean>(true);
 
     const fetchAllUsers = async () => {
         const getUsers = await axios('/api/v1/admin/getUsers');

@@ -12,6 +12,7 @@ const Header = () => {
     const [isLogin, setIsLogin] = useState<boolean>(isLoggedIn);
     const [userPic, setUserPic] = useState<string>('');
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
     useEffect(() => {
         setIsLogin(isLoggedIn);
@@ -19,10 +20,16 @@ const Header = () => {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
         
         // If user is logged in, set the userPicPath
-        if (user && user.userPicPath) {
-            setUserPic(user.userPicPath);
+        if (user) {
+            if(user.userPicPath) {
+                setUserPic(user.userPicPath);
+            }
+            if(user.role === "admin") {
+                setIsAdmin(true);
+            }
         } else {
             setUserPic('');
+            setIsAdmin(false);
         }
     }, [isLoggedIn]);
 
@@ -75,6 +82,14 @@ const Header = () => {
                             Review Books
                         </Link>
                     )}
+                     {isLoggedIn && isAdmin && (
+                        <Link 
+                            to='/app/admin'
+                            className={`hover:underline ${location.pathname === '/app/admin' ? 'font-bold underline' : ''}`}
+                        >
+                            Admin
+                        </Link>
+                    )}
 
                     {/* Conditional rendering for Login button or Profile */}
                     {isLogin ? (
@@ -93,14 +108,14 @@ const Header = () => {
                             {dropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded-lg shadow-lg z-10">
                                     <ul className="py-2">
-                                        <li>
+                                        {/* <li>
                                             <Link
                                                 to="/profile"
                                                 className="block px-4 py-2 hover:bg-gray-200"
                                             >
                                                 Profile
                                             </Link>
-                                        </li>
+                                        </li> */}
                                         <li>
                                             <button
                                                 onClick={handleLogout}
