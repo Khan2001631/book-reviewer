@@ -1,4 +1,4 @@
-# Book Review Platform
+# Book Hive
 
 A feature-rich platform for browsing, reviewing, and managing books, with role-based access for members and admins.
 
