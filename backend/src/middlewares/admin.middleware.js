@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 
+// This function will act as a middleware to check if the user is an admin
 export const verifyAdmin = asyncHandler(async (req, res, next) => {
     try {
         const {role} = req.user;

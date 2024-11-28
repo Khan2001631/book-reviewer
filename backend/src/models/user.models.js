@@ -46,53 +46,68 @@ const userSchema = new Schema({
     }
 }, {timestamps: true});
 
+// Pre-save hook to handle password hashing and userId generation before saving the user document
 userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
-    
-    // Hash the password if modified
-    this.password = await bcrypt.hash(this.password, 10);
-    
-    // Generate a 4-digit `userId` if it does not exist
-    if (!this.userId) {
-        // Find the maximum existing `userId`
-        const lastUser = await User.findOne().sort({ userId: -1 }).exec();
-        const lastUserId = lastUser?.userId || 0;
+    try {
+        // Only hash the password if it has been modified
+        if (this.isModified("password")) {
+            // Hash the password with bcrypt
+            this.password = await bcrypt.hash(this.password, 10);
+        }
 
-        // Assign the next userId (increment by 1)
-        this.userId = (lastUserId + 1) % 10000; // Ensure it wraps around at 10000
+        // Generate a unique `userId` if it does not exist
+        if (!this.userId) {
+            const lastUser = await User.findOne().sort({ userId: -1 }).exec();
+            const lastUserId = lastUser?.userId || 0;
+
+            // Ensure `userId` is incremented and wraps around at 10000
+            this.userId = (lastUserId + 1) % 10000; 
+        }
+
+        // Proceed with saving the document
+        next();
+    } catch (err) {
+        // Handle errors and pass them to the next middleware
+        next(err);
     }
-
-    next();
 });
 
-
+// Instance method to check if the password is correct (used during login)
 userSchema.methods.isPasswordCorrect = async function (password) {
-    return await bcrypt.compare(password, this.password)
-}
-
-userSchema.methods.generateAccessToken = function(){
-    return jwt.sign(
-    {
-        _id: this._id,
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRY
+    try {
+        // Compare provided password with hashed password in the DB
+        return await bcrypt.compare(password, this.password);
+    } catch (err) {
+        throw new Error('Error comparing password');
     }
-    )
-}
+};
 
-userSchema.methods.generateRefreshToken = function(){
-    return jwt.sign(
-    {
-        _id: this._id,
-        
-    },
-    process.env.REFRESH_TOKEN_SECRET,
-    {
-        expiresIn: process.env.REFRESH_TOKEN_EXPIRY
+// Instance method to generate an access token for the user
+userSchema.methods.generateAccessToken = function () {
+    try {
+        // Generate a JWT token for the user with an expiration time
+        return jwt.sign(
+            { _id: this._id },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+        );
+    } catch (err) {
+        throw new Error('Error generating access token');
     }
-    )
-}
+};
+
+// Instance method to generate a refresh token for the user
+userSchema.methods.generateRefreshToken = function () {
+    try {
+        // Generate a JWT refresh token for the user with an expiration time
+        return jwt.sign(
+            { _id: this._id },
+            process.env.REFRESH_TOKEN_SECRET,
+            { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
+        );
+    } catch (err) {
+        throw new Error('Error generating refresh token');
+    }
+};
 
 export const User = mongoose.model('User', userSchema)

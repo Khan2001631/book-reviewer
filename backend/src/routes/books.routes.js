@@ -11,7 +11,7 @@ router.route('/addBook').post(verifyJwt,addBooks);
 
 router.route('/deleteBook').post(verifyJwt, deleteBook);
 
-router.route('/editBooks').post(editBooks);
+router.route('/editBooks').post(verifyJwt, editBooks);
 
 router.route('/updateBookReview').post(verifyJwt, updateBookReview);
 

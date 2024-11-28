@@ -2,6 +2,7 @@ import connectDatabase from "../db/index.js";
 import dontenv  from 'dotenv'
 import { app } from '../src/app.js';
 
+// Load environment variables
 dontenv.config({ path: './environment/.env' });
 
 connectDatabase()

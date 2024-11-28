@@ -20,12 +20,11 @@ const AssignRole: React.FC<AssignRoleProps> = ({ selectedUser, onCloseModal, set
             userId: selectedUser?._id,
             newRole: selectedRole
         }
-        console.log(payload);
-        const response = await axios.patch('/api/v1/admin/update-role', payload);
-        console.log(response);
+        await axios.patch('/api/v1/admin/update-role', payload);
         
         onCloseModal();  // Close the modal after assigning the role
         setIsRefreshAPI(true);
+        resetValues();
     };
 
     const handleRole = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -73,7 +72,10 @@ const AssignRole: React.FC<AssignRoleProps> = ({ selectedUser, onCloseModal, set
                 <div className="flex justify-end space-x-2 mt-6">
                     <button
                         className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md"
-                        onClick={onCloseModal}
+                        onClick={() => {
+                            onCloseModal();
+                            resetValues();
+                        }}
                     >
                         Close
                     </button>
