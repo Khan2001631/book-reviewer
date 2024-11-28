@@ -15,22 +15,11 @@ const Header = () => {
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
     useEffect(() => {
-        setIsLogin(isLoggedIn);
-        // Retrieve the user object from localStorage
         const user = JSON.parse(localStorage.getItem('user') || '{}');
-        
-        // If user is logged in, set the userPicPath
-        if (user) {
-            if(user.userPicPath) {
-                setUserPic(user.userPicPath);
-            }
-            if(user.role === "admin") {
-                setIsAdmin(true);
-            }
-        } else {
-            setUserPic('');
-            setIsAdmin(false);
-        }
+        // Update login status, user picture, and admin status
+        setIsLogin(isLoggedIn);
+        setUserPic(user.userPicPath || '');
+        setIsAdmin(user.role === 'admin');
     }, [isLoggedIn]);
 
     const handleLogout = async () => {

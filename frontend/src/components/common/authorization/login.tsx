@@ -82,9 +82,9 @@ const Login: React.FC<LoginProps>= ({setIsLogin}) => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <div className="text-right">
+            {/* <div className="text-right">
                 <a href="#" className="text-blue-500 hover:underline text-sm">Forgot password?</a>
-            </div>
+            </div> */}
             {error && <p className="text-red-500 text-center">{error}</p>}
             <button
                 type="submit"
