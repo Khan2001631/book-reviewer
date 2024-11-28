@@ -34,7 +34,8 @@ const Login: React.FC<LoginProps>= ({setIsLogin}) => {
                     username: userData?.user.username,
                     email: userData?.user.email,
                     userPicPath: userData?.user.userPicPath,
-                    name: userData?.user.name
+                    name: userData?.user.name,
+                    role: userData?.user.role,
                     // isAdmin: userData.data?.user.isAdmin
                 }
                 localStorage.setItem('user',JSON.stringify(user));

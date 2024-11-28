@@ -8,7 +8,7 @@ export const verifyJwt = asyncHandler(async (req, res, next) => {
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ","");
         
         if(!token) {
-            throw new ApiError(401, "Unauthorized request");
+            throw new ApiError(401, "Unauthorized request: Missing Token");
         }
     
         const decodedToken =  jwt.verify(token,process.env.ACCESS_TOKEN_SECRET);
@@ -16,7 +16,7 @@ export const verifyJwt = asyncHandler(async (req, res, next) => {
         const user = await User.findById(decodedToken?._id).select("-password -refreshToken");
     
         if(!user) {
-            throw new ApiError(404, "Invalid access token");
+            throw new ApiError(404, "User not found");
         }
     
         req.user = user;

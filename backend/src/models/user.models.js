@@ -27,11 +27,13 @@ const userSchema = new Schema({
         required: true
     },
     userPicPath: {
-        type: String
+        type: String,
+        default: "/default/user.png"
     },
     role: {
         type: String,
-        default: "member"
+        enum: ["member", "admin", "moderator"],
+        default: "member",
     },
     refreshToken: {
         type: String

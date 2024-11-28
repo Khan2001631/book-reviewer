@@ -31,7 +31,11 @@ const SignUp: React.FC<SignUpProps> = ({ setIsLogin }) => {
 
     const signUp = async(data: ISignUpInterface) => {
         try {
-            const userResponse = await axios.post('/api/v1/users/register',data);
+            const apiData = {
+                ...data,
+                role: data.email === process.env.REACT_APP_ADMIN_EMAIL ? "admin" : "member",
+            }
+            const userResponse = await axios.post('/api/v1/users/register',apiData);
             const userData = userResponse?.data?.data;
             console.log(userResponse?.data?.success);
             console.log(userData);
