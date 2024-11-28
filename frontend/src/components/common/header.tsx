@@ -28,8 +28,7 @@ const Header = () => {
 
     const handleLogout = async () => {
         try {
-            const response = await axios.post('/api/v1/users/logout', {});
-            console.log(response);
+            await axios.post('/api/v1/users/logout', {});
             setIsLogin(false);
             localStorage.clear();
             dispatch(updateLogout());

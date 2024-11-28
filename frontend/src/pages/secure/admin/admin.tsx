@@ -13,7 +13,6 @@ const AdminPage = () => {
 
     const fetchAllUsers = async () => {
         const getUsers = await axios('/api/v1/admin/getUsers');
-        console.log(getUsers?.data);
         if(getUsers?.data?.success === true) {
             const allUsers = getUsers?.data?.data;
             const totalAdmins = allUsers?.filter((person: any) => (

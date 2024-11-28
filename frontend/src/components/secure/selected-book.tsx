@@ -64,9 +64,7 @@ const SelectedBook: React.FC<ISelectedBookProps> = ({ bookReviews }) => {
             upvotes,
             downvotes
         };
-        const response = await axios.post("/api/v1/books/updateBookReview",payload);
-        console.log(response);
-        
+        await axios.post("/api/v1/books/updateBookReview",payload);        
     };
 
     return (

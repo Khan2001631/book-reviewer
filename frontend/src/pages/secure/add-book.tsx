@@ -14,9 +14,9 @@ interface BookFormInputs {
 const AddBook = () => {
     const { register, handleSubmit, formState: { errors }, reset, clearErrors } = useForm<BookFormInputs>();
 
-    const onSubmit: SubmitHandler<BookFormInputs> = (data) => {
+    const onSubmit: SubmitHandler<BookFormInputs> = async(data) => {
         try {
-            const response = axios.post("/api/v1/books/addBook", data);
+            await axios.post("/api/v1/books/addBook", data);
             resetValues();
             
         } catch (error) {

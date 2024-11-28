@@ -37,9 +37,6 @@ const SignUp: React.FC<SignUpProps> = ({ setIsLogin }) => {
             }
             const userResponse = await axios.post('/api/v1/users/register',apiData);
             const userData = userResponse?.data?.data;
-            console.log(userResponse?.data?.success);
-            console.log(userData);
-            
             if(userResponse?.data?.success === true) {
                 const user = {
                     username: userData?.username,
